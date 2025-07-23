@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - [[${fastFood.name}]]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b00;
+            --secondary: #333333;
+            --accent: #e53935;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836') center/cover no-repeat;
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            max-height: 80px;
+            margin-bottom: 1rem;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            position: relative;
+        }
+        
+        .item-card {
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        
+        .item-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .item-image {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .item-card:hover .item-image {
+            transform: scale(1.05);
+        }
+        
+        .badge-available {
+            background-color: #28a745;
+        }
+        
+        .badge-unavailable {
+            background-color: #dc3545;
+        }
+        
+        .price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .opening-hours {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .section-title {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- En-tête avec infos du fast-food -->
+    <header class="header text-center">
+        <div class="container">
+            <img th:src="${fastFood.logoUrl}" alt="Logo" class="logo">
+            <h1 class="display-4 fw-bold">[[${fastFood.name}]]</h1>
+            <p class="lead">
+                <i class="fas fa-map-marker-alt"></i> [[${fastFood.address}]] 
+                | <i class="fas fa-phone"></i> [[${fastFood.phone}]]
+            </p>
+            <div class="opening-hours d-inline-block mt-2">
+                <i class="fas fa-clock"></i> Ouvert: [[${fastFood.openingTime}]] - [[${fastFood.closingTime}]]
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu principal du menu -->
+    <main class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">[[${menu.name}]]</h2>
+            <p class="text-muted" th:text="${menu.description}">Description du menu</p>
+        </div>
+
+        <!-- Catégories -->
+        <div th:each="category : ${menu.categories}">
+            <div class="category-card">
+                <div class="category-header">
+                    <h3 class="mb-0">[[${category.name}]]</h3>
+                </div>
+                
+                <div class="p-4">
+                    <div class="row g-4">
+                        <!-- Items de menu -->
+                        <div class="col-lg-4 col-md-6" th:each="item : ${category.items}">
+                            <div class="item-card card h-100">
+                                <div class="position-relative">
+                                    <img th:src="${item.imageUrl != null ? item.imageUrl : 'https://via.placeholder.com/300x200?text=FastFood+Express'}"
+                                         class="item-image card-img-top" alt="[[${item.name}]]">
+                                    <span th:class="${item.isAvailable} ? 
+                                          'badge badge-available position-absolute top-0 end-0 m-2' : 
+                                          'badge badge-unavailable position-absolute top-0 end-0 m-2'"
+                                          th:text="${item.isAvailable} ? 'Disponible' : 'Indisponible'">
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">[[${item.name}]]</h5>
+                                    <p class="card-text text-muted" th:text="${item.description}">Description</p>
+                                </div>
+                                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                    <span class="price">[[${#numbers.formatDecimal(item.price, 1, 2, 'COMMA')}]] €</span>
+                                    <button class="btn btn-sm btn-outline-primary" 
+                                            th:disabled="${!item.isAvailable}">
+                                        <i class="fas fa-plus"></i> Ajouter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <img th:src="${fastFood.logoUrl}" alt="Logo" width="100">
+                    <p class="mt-2">[[${fastFood.name}]] - Fast food de qualité</p>
+                </div>
+                
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Contact</h5>
+                    <p>
+                        <i class="fas fa-envelope me-2"></i> [[${fastFood.email}]]<br>
+                        <i class="fas fa-phone me-2"></i> [[${fastFood.phone}]]
+                    </p>
+                </div>
+                
+                <div class="col-md-4">
+                    <h5>Horaires</h5>
+                    <div class="opening-hours">
+                        <p class="mb-1">Lundi à Dimanche:</p>
+                        <p class="mb-0">[[${fastFood.openingTime}]] - [[${fastFood.closingTime}]]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

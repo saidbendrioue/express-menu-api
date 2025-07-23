@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .error { color: #d00000; }
+    </style>
+</head>
+<body>
+    <h1 class="error">Error</h1>
+    <p th:text="${errorMessage}">Error message</p>
+    <a href="/">Retour à l'accueil</a>
+</body>
+</html>
