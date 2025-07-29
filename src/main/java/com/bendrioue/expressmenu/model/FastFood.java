@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "t_fast_food")
 public class FastFood {
     @Id
     private UUID id;
@@ -26,6 +27,9 @@ public class FastFood {
     private String logoUrl;
     private LocalTime openingTime;
     private LocalTime closingTime;
+
+    @ManyToOne
+    private User owner;
 
     @OneToMany(mappedBy = "fastFood")
     private List<Menu> menus;

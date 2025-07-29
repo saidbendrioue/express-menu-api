@@ -8,196 +8,318 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #ff6b00;
-            --secondary: #333333;
-            --accent: #e53935;
-        }
-        
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Poppins', sans-serif;
+            --primary: #f97316; /* orange-500 */
+            --primary-hover: #ea580c; /* orange-600 */
+            --background: #fff7ed; /* orange-50 */
+            --text: #1f2937; /* gray-900 */
+            --text-light: #4b5563; /* gray-600 */
+            --border: #fed7aa; /* orange-200 */
         }
 
+        body {
+            background-color: var(--background);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Header Section */
         .header {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836') center/cover no-repeat;
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-        }
-        
-        .logo {
-            max-height: 80px;
-            margin-bottom: 1rem;
-        }
-        
-        .category-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-            margin-bottom: 2rem;
-            overflow: hidden;
-        }
-        
-        .category-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .category-header {
-            background-color: var(--primary);
-            color: white;
-            padding: 1rem;
             position: relative;
-        }
-        
-        .item-card {
-            border: none;
-            border-radius: 8px;
+            height: 12rem;
             overflow: hidden;
-            transition: all 0.3s;
+        }
+
+        .header-image {
+            width: 100%;
             height: 100%;
-        }
-        
-        .item-card:hover {
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        .item-image {
-            height: 200px;
             object-fit: cover;
-            transition: transform 0.5s;
         }
-        
-        .item-card:hover .item-image {
-            transform: scale(1.05);
+
+        .header-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1rem;
+            color: white;
         }
-        
-        .badge-available {
-            background-color: #28a745;
+
+        .status-indicator {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 9999px;
+            display: inline-block;
         }
-        
-        .badge-unavailable {
-            background-color: #dc3545;
+
+        .status-open {
+            background-color: #34d399; /* green-400 */
         }
-        
-        .price {
+
+        .status-closed {
+            background-color: #f87171; /* red-400 */
+        }
+
+        /* Contact Info */
+        .contact-bar {
+            background-color: white;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .contact-link:hover {
+            color: var(--primary-hover);
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: white;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            font-weight: 500;
+            min-height: 3rem;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            background-color: var(--background);
+        }
+
+        .tab-button:not(.active) {
+            color: var(--text-light);
+        }
+
+        .tab-button:not(.active):hover {
+            color: var(--primary);
+            background-color: var(--background);
+        }
+
+        /* Menu Items */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .menu-item {
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .item-image {
+            position: relative;
+            aspect-ratio: 1/1;
+            width: 100%;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .availability-dot {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 9999px;
+        }
+
+        .available {
+            background-color: #22c55e; /* green-500 */
+        }
+
+        .unavailable {
+            background-color: #ef4444; /* red-500 */
+        }
+
+        .item-info {
+            padding: 0.75rem;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.875rem;
+            line-height: 1.25;
+        }
+
+        .item-price {
             color: var(--primary);
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 0.875rem;
         }
-        
-        .footer {
-            background-color: var(--secondary);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
+
+        .item-description {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        
-        .opening-hours {
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 1rem;
+        .tab-nav-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
         }
-        
-        .section-title {
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
+
+        .tab-nav-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari */
+        }
+
+        .tab-nav {
+            display: inline-flex;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            padding-bottom: 8px; /* Space for scrollbar if it appears */
+        }
+
+        .tab-button {
+            flex: 0 0 auto; /* Don't grow or shrink */
+            /* Your existing button styles */
+            padding: 8px 16px;
+            margin-right: 8px;
+            /* Add other button styles as needed */
         }
     </style>
 </head>
 <body>
-    <!-- En-tête avec infos du fast-food -->
-    <header class="header text-center">
-        <div class="container">
-            <img th:src="${fastFood.logoUrl}" alt="Logo" class="logo">
-            <h1 class="display-4 fw-bold">[[${fastFood.name}]]</h1>
-            <p class="lead">
-                <i class="fas fa-map-marker-alt"></i> [[${fastFood.address}]] 
-                | <i class="fas fa-phone"></i> [[${fastFood.phone}]]
-            </p>
-            <div class="opening-hours d-inline-block mt-2">
-                <i class="fas fa-clock"></i> Ouvert: [[${fastFood.openingTime}]] - [[${fastFood.closingTime}]]
+<!-- Header Section -->
+<header class="header">
+    <img th:src="${fastFood.logoUrl ?: 'https://via.placeholder.com/800x400?text=Delicious+Food'}"
+         alt="Restaurant header image"
+         class="header-image">
+    <div class="header-overlay">
+        <h1 class="text-2xl font-bold mb-2">[[${fastFood.name}]]</h1>
+        <div class="flex items-center gap-2 mb-2">
+<!--            <span th:class="${fastFood.open} ? 'status-indicator status-open' : 'status-indicator status-closed'"></span>-->
+            <span class="text-sm font-medium">
+                <span th:text="Open"></span> • 
+                [[${fastFood.openingTime}]] - [[${fastFood.closingTime}]]
+            </span>
+            <i class="fas fa-clock text-sm ml-1"></i>
+        </div>
+    </div>
+</header>
+
+<!-- Contact Info -->
+<div class="contact-bar">
+    <div class="flex flex-col gap-4 text-sm">
+        <div class="container" style="padding-left: 0">
+            <div class="d-flex justify-content-start">
+                <a th:href="'tel:' + ${fastFood.phone}" class="contact-link">
+                    <i class="fas fa-phone"></i>
+                    <span th:text="${fastFood.phone}"></span>
+                </a>
+                <span style="width: 10px"></span>
+                <a th:href="'mailto:' + ${fastFood.email}" class="contact-link">
+                    <i class="fas fa-envelope"></i>
+                    <span th:text="${fastFood.email}"></span>
+                </a>
             </div>
         </div>
-    </header>
-
-    <!-- Contenu principal du menu -->
-    <main class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">[[${menu.name}]]</h2>
-            <p class="text-muted" th:text="${menu.description}">Description du menu</p>
+        <div class="flex items-center gap-2 text-gray-600">
+            <i class="fas fa-map-marker-alt"></i>
+            <span th:text="${fastFood.address}"></span>
         </div>
+    </div>
+</div>
 
-        <!-- Catégories -->
-        <div th:each="category : ${menu.categories}">
-            <div class="category-card">
-                <div class="category-header">
-                    <h3 class="mb-0">[[${category.name}]]</h3>
+<!-- Tab Navigation -->
+<div class="tab-nav-container">
+    <div class="tab-nav">
+        <th:block th:each="section, iterStat : ${menu.sections}">
+            <button class="tab-button" th:classappend="${iterStat.first} ? 'active' : ''"
+                    th:attr="data-section=${iterStat.index}">
+                <span th:text="${section.name}"></span>
+            </button>
+        </th:block>
+    </div>
+</div>
+
+<!-- Menu Items Grid -->
+<main>
+    <!-- Render all sections but only show the first one by default -->
+    <th:block th:each="section, iterStat : ${menu.sections}">
+        <div th:id="'section-' + ${iterStat.index}"
+             class="menu-grid"
+             th:classappend="${iterStat.first} ? '' : 'd-none'">
+            <div th:each="product : ${section.products}" class="menu-item">
+                <div class="item-image">
+                    <img th:src="${product.imageUrl ?: 'https://via.placeholder.com/200x200?text=FastFood+Express'}"
+                         alt="Product image">
+                    <span th:class="${product.available} ? 'availability-dot available' : 'availability-dot unavailable'"></span>
                 </div>
-                
-                <div class="p-4">
-                    <div class="row g-4">
-                        <!-- Items de menu -->
-                        <div class="col-lg-4 col-md-6" th:each="item : ${category.items}">
-                            <div class="item-card card h-100">
-                                <div class="position-relative">
-                                    <img th:src="${item.imageUrl != null ? item.imageUrl : 'https://via.placeholder.com/300x200?text=FastFood+Express'}"
-                                         class="item-image card-img-top" alt="[[${item.name}]]">
-                                    <span th:class="${item.isAvailable} ? 
-                                          'badge badge-available position-absolute top-0 end-0 m-2' : 
-                                          'badge badge-unavailable position-absolute top-0 end-0 m-2'"
-                                          th:text="${item.isAvailable} ? 'Disponible' : 'Indisponible'">
-                                    </span>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">[[${item.name}]]</h5>
-                                    <p class="card-text text-muted" th:text="${item.description}">Description</p>
-                                </div>
-                                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
-                                    <span class="price">[[${#numbers.formatDecimal(item.price, 1, 2, 'COMMA')}]] €</span>
-                                    <button class="btn btn-sm btn-outline-primary" 
-                                            th:disabled="${!item.isAvailable}">
-                                        <i class="fas fa-plus"></i> Ajouter
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <div class="item-info">
+                    <div class="item-header">
+                        <h3 class="item-name" th:text="${product.name}"></h3>
+                        <span class="item-price" th:text="${#numbers.formatDecimal(product.price, 1, 2, 'COMMA')} + ' €'"></span>
                     </div>
+                    <p class="item-description" th:text="${product.description}"></p>
                 </div>
             </div>
         </div>
-    </main>
+    </th:block>
+</main>
 
-    <!-- Pied de page -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <img th:src="${fastFood.logoUrl}" alt="Logo" width="100">
-                    <p class="mt-2">[[${fastFood.name}]] - Fast food de qualité</p>
-                </div>
-                
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5>Contact</h5>
-                    <p>
-                        <i class="fas fa-envelope me-2"></i> [[${fastFood.email}]]<br>
-                        <i class="fas fa-phone me-2"></i> [[${fastFood.phone}]]
-                    </p>
-                </div>
-                
-                <div class="col-md-4">
-                    <h5>Horaires</h5>
-                    <div class="opening-hours">
-                        <p class="mb-1">Lundi à Dimanche:</p>
-                        <p class="mb-0">[[${fastFood.openingTime}]] - [[${fastFood.closingTime}]]</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Tab functionality to switch between sections
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            // Add active class to clicked button
+            this.classList.add('active');
+
+            // Hide all sections
+            document.querySelectorAll('.menu-grid').forEach(section => {
+                section.classList.add('d-none');
+            });
+
+            // Show the selected section
+            const sectionIndex = this.dataset.section;
+            document.getElementById(`section-${sectionIndex}`).classList.remove('d-none');
+        });
+    });
+</script>
 </body>
 </html>

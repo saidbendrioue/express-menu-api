@@ -14,7 +14,7 @@ public class MenuDto {
     private UUID id;
     private String name;
     private String description;
-    private boolean isActive;
+    private boolean active;
     private UUID fastFoodId;
-    private List<MenuCategoryDto> categories;
+    private List<SectionDto> sections;
 }

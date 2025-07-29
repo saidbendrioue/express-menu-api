@@ -3,6 +3,7 @@ package com.bendrioue.expressmenu.dto;
 
 import lombok.*;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,8 +18,9 @@ public class FastFoodDto {
     private String phone;
     private String email;
     private String logoUrl;
-    private String openingTime; // "HH:mm"
-    private String closingTime;
+    private LocalTime openingTime;
+    private LocalTime closingTime;
+    private UUID ownerId;
     private List<MenuDto> menus;
 }
 
